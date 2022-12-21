@@ -11,6 +11,7 @@
  * The word "QR Code" is registered trademark of DENSO WAVE INCORPORATED
  * http://www.denso-wave.com/qrcode/faqpatent-e.html
  */
+export { Html5QrcodeHumi } from "./html5-qrcode-humi";
 
 export { Html5Qrcode } from "./html5-qrcode";
 export { Html5QrcodeScanner } from "./html5-qrcode-scanner";
