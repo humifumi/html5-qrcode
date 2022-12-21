@@ -259,6 +259,8 @@ export class Html5QrcodeHumi {
     private readonly verbose: boolean;
     private readonly qrcode: RobustQrcodeDecoderAsync;
 
+    private torchOn: boolean;
+
     private shouldScan: boolean;
 
     // Nullable elements
@@ -327,6 +329,8 @@ export class Html5QrcodeHumi {
         this.foreverScanTimeout;
         this.shouldScan = true;
         this.stateManagerProxy = StateManagerFactory.create();
+
+        this.torchOn = false;
     }
 
     //#region start()
@@ -527,7 +531,21 @@ export class Html5QrcodeHumi {
     public getState(): Html5QrcodeScannerState {
         return this.stateManagerProxy.getState();
     }
-
+    public getTorchSupported(): boolean {
+        return this.getRunningTrackCameraCapabilities().torchFeature().isSupported()
+    }
+    public async setTorch(on: boolean) {
+        this.torchOn = on
+        if (this.getRunningTrackCameraCapabilities().torchFeature().isSupported()) {
+            await this.getRunningTrackCameraCapabilities().torchFeature().apply(this.torchOn)
+        }
+    }
+    public async switchTorch() {
+        this.torchOn = !this.torchOn
+        if (this.getRunningTrackCameraCapabilities().torchFeature().isSupported()) {
+            await this.getRunningTrackCameraCapabilities().torchFeature().apply(this.torchOn)
+        }
+    }
     /**
      * Stops streaming QR Code video and scanning.
      *
